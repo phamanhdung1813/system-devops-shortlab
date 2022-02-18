@@ -1,1 +1,0 @@
-# Click into each folder to see details project configuration
