@@ -1,0 +1,60 @@
+version: "3"
+
+#Network
+networks:
+  stanley-pham-network:
+    driver: bridge
+
+#Volumes
+volumes:
+  dir-site:
+    driver_opts:
+      device: /C/Users/PHAM ANH DUNG/Desktop/share_directory/docker-compose/sites
+      type: bind
+      o: bind
+
+services:
+  # PHP Container
+  php-service:
+    container_name: php-service
+    image: "php:7.3-fpm"
+    build:
+      dockerfile: Dockerfile
+      context: /C/Users/PHAM ANH DUNG/Desktop/share_directory/docker-compose/php
+    hostname: stanleypham
+    restart: always
+    networks:
+      - stanley-pham-network
+    volumes:
+      - dir-site:/home/sites/
+  # HTTPD Container
+  httpd-service:
+    container_name: httpd-service
+    image: "httpd:latest"
+    hostname: stanleypham
+    restart: always
+    networks:
+      - stanley-pham-network
+    volumes:
+      - dir-site:/home/sites/
+      - /C/Users/PHAM ANH DUNG/Desktop/share_directory/docker-compose/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    ports:
+      - "8080:80" # http://localhost:8080
+      - "443:443" # SSL
+
+  # MYSQL Container
+  mysql-service:
+    container_name: mysql-service
+    image: "mysql:latest"
+    hostname: stanleypham
+    restart: always
+    networks:
+      - stanley-pham-network
+    volumes:
+      - /C/Users/PHAM ANH DUNG/Desktop/share_directory/docker-compose/my.cnf:/etc/mysql/my.cnf
+      - /C/Users/PHAM ANH DUNG/Desktop/share_directory/docker-compose/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=Anhdung1302
+      - MYSQL_DATABASE=db_site
+      - MYSQL_USER=adpham1
+      - MYSQL_PASSWORD=Anhdung1302
