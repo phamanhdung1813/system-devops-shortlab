@@ -1,1 +1,1 @@
-# Click into each project folder to view detail instruction and implementation !!!
+# Click into each project folder to view detail instruction and implementation!!!
